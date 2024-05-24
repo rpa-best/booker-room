@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  rpatm_nuxt:
+    container_name: rpatm_nuxt_prod
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.prod
+    ports:
+      - 3000:3000
+    command: sh -c "npm run serve"
+    restart: always
+    env_file:
+      - ./frontend/.env

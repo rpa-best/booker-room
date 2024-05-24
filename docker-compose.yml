@@ -1,0 +1,16 @@
+version: '3.3'
+
+services:
+  booker-room-front:
+    container_name: booker-room-front
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    command: sh -c "npm run dev"
+    restart: always
+    env_file:
+      - ./frontend/.env
+    volumes:
+      - ./frontend/:/app/
