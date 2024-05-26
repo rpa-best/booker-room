@@ -19,28 +19,63 @@
                     </div>
                     <div class="left-top">
                         <ProfileToggle />
-                        <LocationToggle />
+                        <LocationsToggle />
                     </div>
                 </div>
+                <LGeoJson v-if="location.features.features"
+                    :geojson="location.features"
+                    :options="locationGeojsonOption"
+                />
             </l-map>
         </div>
     </div>
+    <Locations />
+    <Location />
 </template>
 
 <script>
 import { isDark } from '@/composables/dark'
+import { useLocation } from "@/store/location"
 
 export default {
     name: "Map",
     data() {
+        var geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#196DFF",
+            color: "#fff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        };
         return {
             zoom: 12,
             spinner: false,
             isMounted: false,
+            location: useLocation(),
+            locationGeojsonOption: {
+                pointToLayer: function (feature, latlng) {
+                    return L.circleMarker(latlng, geojsonMarkerOptions);
+                },
+                onEachFeature: (feature, layer) => {
+                    layer.on("click", () => {
+                        this.$refs.map.leafletObject.setView(layer._latlng, 16);
+                        layer.setStyle({
+                            radius: 8,
+                            fillColor: "#FF4433",
+                            color: "#fff",
+                            weight: 2,
+                            opacity: 1,
+                            fillOpacity: 0.8
+                        })
+                        this.$router.push({name: this.$route.name, query: {location: feature.properties.id}})
+                    })
+                }
+            }
         };
     },
     methods: {
-        map_ready() {
+        async map_ready() {
             this.isMounted = true;
             this.init_spinner();
         },
@@ -50,6 +85,11 @@ export default {
             };
         },
     },
+    computed: {
+        location_show() {
+            return this.$route.query.location
+        }
+    }
 }
 </script>
 <style>

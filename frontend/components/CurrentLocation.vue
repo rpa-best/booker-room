@@ -12,15 +12,26 @@ import {findRealParent} from "./utils"
 export default {
     name: "CurrentLocation",
     mounted() {
-        this.setCurrentLocation()
+        setTimeout(() => {
+            this.setCurrentLocation()
+        }, 2000)
     },
     methods: {
         setCurrentLocation() {
+            var geojsonMarkerOptions = {
+                radius: 10,
+                fillColor: "#FF4433",
+                color: "#fff",
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            };
             const map = findRealParent(this.$parent).leafletObject
             navigator.geolocation.getCurrentPosition((position) => {
                 const latit = position.coords.latitude;
                 const longit = position.coords.longitude;
                 map.setView([latit, longit]);
+                L.circleMarker([latit, longit], geojsonMarkerOptions).addTo(map)
             })
         }
     }

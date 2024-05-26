@@ -1,8 +1,8 @@
 version: '3.3'
 
 services:
-  rpatm_nuxt:
-    container_name: rpatm_nuxt_prod
+  booker-room-front:
+    container_name: booker-room-front
     build:
       context: ./frontend/
       dockerfile: Dockerfile.prod

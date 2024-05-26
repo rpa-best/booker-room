@@ -1,9 +1,12 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { getLocations } from '~/services/location'
+
 
 export const useLocation = defineStore('location', {
     state: () => ({
         show: ref(false),
+        features: ref({})
     }),
     actions: {
         open() {
@@ -11,6 +14,9 @@ export const useLocation = defineStore('location', {
         },
         close() {
             this.show = false
+        },
+        async fetch_features(params: any) {
+            this.features = await getLocations(params)
         }
     }
 })

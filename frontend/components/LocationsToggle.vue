@@ -6,15 +6,6 @@
             </div>
         </template>
     </Card>
-    <Sidebar position="bottom" v-model:visible="location.show" style="height: 90vh; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-        <template #header>
-            <div class="flex align-items-center gap-2">
-                <!-- <Avatar image="/images/avatar/amyelsner.png" shape="circle" /> -->
-                <span class="font-bold">{{ $t('Locations') }}</span>
-            </div>
-        </template>
-        <Locations />
-    </Sidebar>
 </template>
 <script>
 import { useLocation } from "~/store/location"
@@ -23,7 +14,7 @@ export default {
     name: "LocationToggle",
     data() {
         return {
-            location: useLocation()
+            location: useLocation(),
         }
     },
 }
