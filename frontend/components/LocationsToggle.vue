@@ -1,11 +1,5 @@
 <template>
-    <Card style="border-radius: 12px; width: 42px; height: 42px;" @click="location.open">
-        <template #content>
-            <div class="flex justify-content-center align-items-center">
-                <font-awesome-icon style="font-size: 22px; opacity: 0.7; margin-top: 0.1rem" :icon="['fas', 'building']" />
-            </div>
-        </template>
-    </Card>
+    <Button class="locations-toggle p-2" style="border-radius: 20px; font-size: 18px;" :label="location.show ? $t('На карте') : $t('Показать список')" rounded @click="toggle" />
 </template>
 <script>
 import { useLocation } from "~/store/location"
@@ -17,5 +11,17 @@ export default {
             location: useLocation(),
         }
     },
+    methods: {
+        toggle() {
+            this.location.show ? this.location.close() : this.location.open()
+        }
+    }
 }
 </script>
+<style>
+@media screen and (min-width: 460px) {
+    .locations-toggle   {
+        display: none;
+    }
+}
+</style>

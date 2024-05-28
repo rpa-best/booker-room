@@ -5,7 +5,7 @@ import { getLocations } from '~/services/location'
 
 export const useLocation = defineStore('location', {
     state: () => ({
-        show: ref(false),
+        show: ref(true),
         features: ref({})
     }),
     actions: {

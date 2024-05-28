@@ -11,11 +11,6 @@
 import {findRealParent} from "./utils"
 export default {
     name: "CurrentLocation",
-    mounted() {
-        setTimeout(() => {
-            this.setCurrentLocation()
-        }, 2000)
-    },
     methods: {
         setCurrentLocation() {
             var geojsonMarkerOptions = {

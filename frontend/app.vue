@@ -25,7 +25,7 @@ export default {
 }
 </script>
 <style>
-body {
-  background-color: var(--surface-ground);
+body, .map_container, .leaflet-container {
+  background-color: var(--surface-card);
 }
 </style>

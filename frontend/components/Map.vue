@@ -3,11 +3,14 @@
         <i class="pi pi-spin pi-spinner" style="font-size: 5rem; opacity: 1; color: #3388FF;"></i>
     </div>
     <div class="map_container">
-        <div style="height: 100vh; width:100vw">
+        <div style="height: 100vh; width:100vw;">
             <l-map ref="map" :zoom="zoom" :center="[59.940627, 30.402991]"
                 :options="{ zoomControl: false, preferCanvas: true, doubleClickZoom: false}" @ready="map_ready">
-                <l-tile-layer :key="isDark" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" layer-type="base" :className="isDark ? 'map_dark': 'map_light'"
+                <l-tile-layer v-if="!isDark" url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" layer-type="base"
                     name="LightMap">
+                </l-tile-layer>
+                <l-tile-layer v-if="isDark" url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" layer-type="base"
+                    name="DarkMap">
                 </l-tile-layer>
                 <div v-if="isMounted">
                     <div class="right-center">
@@ -15,10 +18,10 @@
                         <CurrentLocation />
                     </div>
                     <div class="right-top">
+                        <ProfileToggle />
                         <ThemaToggle />
                     </div>
-                    <div class="left-top">
-                        <ProfileToggle />
+                    <div class="bottom-center">
                         <LocationsToggle />
                     </div>
                 </div>
@@ -61,7 +64,7 @@ export default {
                     layer.on("click", () => {
                         this.$refs.map.leafletObject.setView(layer._latlng, 16);
                         layer.setStyle({
-                            radius: 8,
+                            radius: 12,
                             fillColor: "#FF4433",
                             color: "#fff",
                             weight: 2,
@@ -139,13 +142,22 @@ html {
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
-    z-index: 1000;
+    z-index: 899;
 }
 
 .right-top {
     position: fixed;
     top: 10px;
     right: 10px;
+    z-index: 899;
+    display: flex;
+    flex-direction: row;
+}
+.bottom-center {
+    position: fixed;
+    bottom: 10px;
+    right: 50%;
+    transform: translateX(50%);
     z-index: 1000;
 }
 
@@ -153,11 +165,15 @@ html {
     position: fixed;
     top: 10px;
     left: 10px;
-    z-index: 1000;
+    z-index: 899;
 }
 
 .right-center > * {
     margin-top: 0.5rem;
+}
+
+.right-top > * {
+    margin-left: 0.5rem;
 }
 
 .left-top > * {

@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   // routeRules: {
   //   "/": {redirect: '/map/'}
   // },
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   experimental: {
     componentIslands: true
   },

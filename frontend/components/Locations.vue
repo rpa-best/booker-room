@@ -7,7 +7,6 @@
                         <!-- <Avatar image="/images/avatar/amyelsner.png" shape="circle" /> -->
                         <span class="font-bold">{{ $t('Locations') }}</span>
                     </div>
-                    <Button @click="locations.close" icon="pi pi-times" text rounded />
                 </div>
                 <Card class="mb-3 location-card" v-for="location in locations.features.features" :key="location">
                     <template #content>
@@ -50,13 +49,27 @@ export default {
 </script>
 <style>
 .locations {
-    z-index: 1000;
+    z-index: 900;
     width: 360px;
     height: 100vh;
     position: absolute;
     top: 0;
     left: 0;
     transition: 0.5s;
+}
+
+
+@media screen and (max-width: 460px) {
+    .locations {
+        top: auto;
+        bottom: 0;
+        width: 100%;
+        height: 94vh;
+    }
+    .locations_close {
+        height: 0;
+        overflow-x: hidden;
+    }
 }
 
 .locations * {
@@ -68,7 +81,6 @@ export default {
 .locations_close {
     width: 0;
     overflow-x: hidden;
-
 }
 
 .location-card:hover {
