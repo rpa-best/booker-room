@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Topbar/>
     <Toast />
     <NuxtPage />
   </div>
@@ -27,5 +28,8 @@ export default {
 <style>
 body, .map_container, .leaflet-container {
   background-color: var(--surface-card);
+}
+.leaflet-control-attribution {
+  display: none;
 }
 </style>

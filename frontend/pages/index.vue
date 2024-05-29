@@ -1,26 +1,9 @@
 <template>
-  <div class="index">
-    <client-only>
-      <Map></Map>
-    </client-only>
-  </div>
+  <div>Home</div>
 </template>
 
-<script lang="ts">
-import auth from '~/middleware/auth';
+<script>
 export default {
-  async mounted() {
-    auth()    
-  }
+  name: "Home"
 }
 </script>
-
-<style>
-.index {
-  background-color: var(--surface-card);
-}
-.leaflet-control-attribution {
-  display: none;
-}
-
-</style>

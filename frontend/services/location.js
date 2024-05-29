@@ -1,3 +1,5 @@
+import { getFloor } from "./floor"
+
 export const getLocation = async (id, params) => {
     return {
         id: 1,
@@ -17,16 +19,7 @@ export const getLocation = async (id, params) => {
             }
         ],
         floors: [
-            {
-                id: 1,
-                name: "1-Этаж",
-                count_rooms: 32,
-            },
-            {
-                id: 2,
-                name: "3-Этаж",
-                count_rooms: 24,
-            }
+            await getFloor()
         ]
     }
 }

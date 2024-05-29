@@ -2,6 +2,13 @@
     <div class="location" :class="$route.query.location ? 'location_open' : 'location_close'">
         <Card style="height: 100%;">
             <template #content>
+                <div class="flex justify-content-between align-items-center" v-if="location">
+                    <Button class="p-1" @click="close" style="position: relative; top: 0px; left: 0px;" icon="pi pi-times"
+                        text rounded />
+                    <h2 class="mb-3 text-center" style="font-weight: bold; font-size: 25px; overflow-y: hidden;">{{
+                        location.name }}</h2>
+                    <div style="width: 50px"></div>
+                </div>
                 <div style="position: relative;">
                     <Galleria v-if="!loading" :value="location.images" containerStyle="width: 100%" :circular="true"
                         :autoPlay="true" :transitionInterval="2000" :showItemNavigators="true" :showThumbnails="false">
@@ -9,12 +16,9 @@
                             <Image :src="slotProps.item.image" alt="Image" preview style="width: 100%; display: block" />
                         </template>
                     </Galleria>
-                    <Button class="p-1" @click="close" style="position: absolute; top: 0px; left: 0px;" icon="pi pi-times"
-                        text rounded />
                 </div>
                 <div v-if="!loading" class="mt-3">
-                    <h2 class="mb-3 text-center" style="font-weight: bold; font-size: 25px; overflow-y: hidden;">{{
-                        location.name }}</h2>
+                    
                     <Rating class="mb-1" v-model="location.rating" readonly :cancel="false" />
                     <p style="color: var(--surface-400);" class="mb-3"><font-awesome-icon :icon="['fas', 'location-dot']" />
                         {{ location.address }}</p>
@@ -22,24 +26,22 @@
                         <strong>{{ $t('Описвние') }}</strong>
                         <p class="location_desc" :class="desc_open ? 'location_desc_open' : null">{{ location.desc }}</p>
 
-                        <Button :label="!desc_open ? $t('Смотреть все') : $t('Меньше')" @click="desc_open = !desc_open" text
-                            style="color: var(--primary-color);" class="mt-2" />
+                        <div  @click="desc_open = !desc_open" text
+                            style="color: var(--primary-color); font-weight: bold;" class="mt-2"> {{ !desc_open ? $t('Смотреть все') : $t('Меньше') }}</div>
                     </div>
                     <div class="mt-3">
-                        <strong>{{ $t('Расположение') }}</strong>
-                        <div style="width: 100%; height: 300px; z-index: 1000;">
-                            <l-map :zoom="16" :center="[location.point[1], location.point[0]]"
-                                :options="{ zoomControl: false, preferCanvas: true, doubleClickZoom: false }">
-                                <l-tile-layer v-if="!isDark"
-                                    url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
-                                    layer-type="base" name="LightMap">
-                                </l-tile-layer>
-                                <l-tile-layer v-if="isDark"
-                                    url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-                                    layer-type="base" name="DarkMap">
-                                </l-tile-layer>
-
-                            </l-map>
+                        <!-- <div v-for="floor in location.floors">
+                            <strong>{{ floor.name }}</strong>
+                            <div class="row justify-content-between px-3">
+                                <div v-for="room in floor.rooms" class="col-1 p-0 m-2 flex justify-content-center align-items-center" 
+                                style="background-color: var(--surface-ground); width: 11.5%; height: 50px; border: 1px solid var(--surface-border); border-radius: 10%;"
+                                @click="(e) => select_room(e, room)">
+                                    {{ room.name }}
+                                </div>
+                            </div>
+                        </div> -->
+                        <div>
+                            <!-- <Calendar style="border: none;" :minDate="minDate" v-model="booking.date" inline showWeek /> -->
                         </div>
                     </div>
                 </div>
@@ -55,6 +57,7 @@ export default {
     name: 'Location',
     data() {
         return {
+            minDate: new Date(),
             loading: true,
             location: null,
             desc_open: false,
@@ -79,6 +82,15 @@ export default {
         await this.init()
     },
     methods: {
+        map_ready() {
+            this.isMounted = true;
+            this.$refs.map.leafletObject.spin = (val) => {
+                this.spinner = val;
+            };
+        },
+        select_room(e, room) {
+            this.$router.push(`/locations?location=${this.$route.query.location}&room=${room.id}`)
+        },
         setView() {
             for (let layer of Object.values(this.$parent.$refs.map.leafletObject._layers)) {
                 if (layer.feature && (layer.feature.properties.id == this.$route.query.location)) {
@@ -102,12 +114,12 @@ export default {
             } catch (e) {
                 console.log(e);
                 delete this.$route.query.location
-                await this.$router.push(this.$route)
+                await this.$router.push("/")
             }
             this.loading = false
         },
         close() {
-            this.$router.push("/")
+            this.$router.push({name: this.$route.name})
             for (let layer of Object.values(this.$parent.$refs.map.leafletObject._layers)) {
                 if (layer.feature && (layer.feature.properties.id == this.$route.query.location)) {
                     layer.setStyle(layer.defaultOptions)
@@ -121,9 +133,9 @@ export default {
 .location {
     z-index: 1000;
     width: 360px;
-    height: 100vh;
+    height: calc(100vh - 70px);
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
     transition: 0.5s;
 }
@@ -134,7 +146,6 @@ export default {
         top: auto;
         bottom: 0;
         width: 100%;
-        height: 100vh;
     }
 
     .locations_close {

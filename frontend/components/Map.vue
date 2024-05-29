@@ -6,10 +6,10 @@
         <div style="height: 100vh; width:100vw;">
             <l-map ref="map" :zoom="zoom" :center="[59.940627, 30.402991]"
                 :options="{ zoomControl: false, preferCanvas: true, doubleClickZoom: false}" @ready="map_ready">
-                <l-tile-layer v-if="!isDark" url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png" layer-type="base"
+                <l-tile-layer v-if="!isDark" url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png" layer-type="base"
                     name="LightMap">
                 </l-tile-layer>
-                <l-tile-layer v-if="isDark" url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png" layer-type="base"
+                <l-tile-layer v-if="isDark" url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png" layer-type="base"
                     name="DarkMap">
                 </l-tile-layer>
                 <div v-if="isMounted">
@@ -34,6 +34,7 @@
     </div>
     <Locations />
     <Location />
+    <Room />
 </template>
 
 <script>

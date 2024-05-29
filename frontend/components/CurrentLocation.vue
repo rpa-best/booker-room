@@ -22,7 +22,7 @@ export default {
                 fillOpacity: 0.8
             };
             const map = findRealParent(this.$parent).leafletObject
-            navigator.geolocation.getCurrentPosition((position) => {
+            navigator.geolocation.watchPosition((position) => {
                 const latit = position.coords.latitude;
                 const longit = position.coords.longitude;
                 map.setView([latit, longit]);

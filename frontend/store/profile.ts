@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useProfile = defineStore('profile', {
     state: () => ({
         show: ref(false),
+        data: ref({})
     }),
     actions: {
         open() {
