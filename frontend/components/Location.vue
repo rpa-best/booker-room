@@ -30,18 +30,17 @@
                             style="color: var(--primary-color); font-weight: bold;" class="mt-2"> {{ !desc_open ? $t('Смотреть все') : $t('Меньше') }}</div>
                     </div>
                     <div class="mt-3">
-                        <!-- <div v-for="floor in location.floors">
-                            <strong>{{ floor.name }}</strong>
-                            <div class="row justify-content-between px-3">
-                                <div v-for="room in floor.rooms" class="col-1 p-0 m-2 flex justify-content-center align-items-center" 
-                                style="background-color: var(--surface-ground); width: 11.5%; height: 50px; border: 1px solid var(--surface-border); border-radius: 10%;"
-                                @click="(e) => select_room(e, room)">
-                                    {{ room.name }}
-                                </div>
-                            </div>
-                        </div> -->
                         <div>
-                            <!-- <Calendar style="border: none;" :minDate="minDate" v-model="booking.date" inline showWeek /> -->
+                            <Calendar class="calendar" style="border: none; width: 100%;" :minDate="minDate" v-model="selectedDate" @date-select="date_select" inline>
+                                <template #date="slotProps">
+                                    <div class="text-center">
+                                        <div>{{ slotProps.date.day }}</div>
+                                        <div v-if="free_rooms[new Date(slotProps.date.year, slotProps.date.month, slotProps.date.day).toJSON().split('T')[0]]" style="font-size: 10px;" :style="`color: ${free_rooms[new Date(slotProps.date.year, slotProps.date.month, slotProps.date.day).toJSON().split('T')[0]] > 0 ? 'green' : 'red' }`">
+                                            {{ free_rooms[new Date(slotProps.date.year, slotProps.date.month, slotProps.date.day).toJSON().split("T")[0]] }} шт
+                                        </div>
+                                    </div>
+                                </template>
+                            </Calendar>
                         </div>
                     </div>
                 </div>
@@ -51,7 +50,7 @@
 </template>
 <script>
 import { isDark } from '@/composables/dark'
-import { getLocation } from '~/services/location';
+import { getFreeRoomsCount, getLocation } from '~/services/location';
 
 export default {
     name: 'Location',
@@ -61,13 +60,19 @@ export default {
             loading: true,
             location: null,
             desc_open: false,
-            isDark,
+            isDark, free_rooms: {}
         }
     },
     computed: {
         location_id: function () {
             return this.$route.query.location
-        }
+        },
+        selectedDate() {
+            if (!this.$route.query.date) {
+                return null
+            }
+            return new Date(this.$route.query.date)
+        },
     },
     watch: {
         location_id(value) {
@@ -82,14 +87,17 @@ export default {
         await this.init()
     },
     methods: {
+        date_select(v) {
+            v.setDate(v.getDate() + 1)
+            const query = JSON.parse(JSON.stringify(this.$route.query))
+            query.date = v.toJSON().split("T")[0]
+            this.$router.push({name: this.$route.name, query})
+        },
         map_ready() {
             this.isMounted = true;
             this.$refs.map.leafletObject.spin = (val) => {
                 this.spinner = val;
             };
-        },
-        select_room(e, room) {
-            this.$router.push(`/locations?location=${this.$route.query.location}&room=${room.id}`)
         },
         setView() {
             for (let layer of Object.values(this.$parent.$refs.map.leafletObject._layers)) {
@@ -111,15 +119,18 @@ export default {
                     }, 1000);
                 }
                 this.location = await getLocation(this.$route.query.location)
+                this.free_rooms = await getFreeRoomsCount(this.$route.query.location)
             } catch (e) {
                 console.log(e);
                 delete this.$route.query.location
-                await this.$router.push("/")
+                await this.$router.push({name: this.$route.name})
             }
             this.loading = false
         },
         close() {
-            this.$router.push({name: this.$route.name})
+            const query = JSON.parse(JSON.stringify(this.$route.query))
+            delete query.location
+            this.$router.push({name: this.$route.name, query})
             for (let layer of Object.values(this.$parent.$refs.map.leafletObject._layers)) {
                 if (layer.feature && (layer.feature.properties.id == this.$route.query.location)) {
                     layer.setStyle(layer.defaultOptions)

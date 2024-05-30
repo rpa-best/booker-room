@@ -34,7 +34,7 @@
     </div>
     <Locations />
     <Location />
-    <Room />
+    <Rooms />
 </template>
 
 <script>
@@ -72,7 +72,9 @@ export default {
                             opacity: 1,
                             fillOpacity: 0.8
                         })
-                        this.$router.push({name: this.$route.name, query: {location: feature.properties.id}})
+                        const query = JSON.parse(JSON.stringify(this.$route.query))
+                        query.location = feature.properties.id
+                        this.$router.push({name: this.$route.name, query})
                     })
                 }
             }

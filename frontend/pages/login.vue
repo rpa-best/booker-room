@@ -1,33 +1,5 @@
 <template>
     <div class="login">
-        <div class="d-flex justify-content-end" style="margin-right: 10%; padding-top: 56px;">
-            <div class="flex align-items-center">
-                <ClientOnly>
-                    <button
-                        class="ml-3 bg-transparent px-2 py-1 focus:outline-transparent rounded-sm bg-white dark:bg-black text-black dark:text-white rounded-md hover:text-primary"
-                        @click="(e) => toggleDark()">
-                        <i class="pi pi-moon" style="font-size: 25px;" v-if="!isDark"></i>
-                        <i class="pi pi-sun" style="font-size: 25px;" v-else></i>
-                    </button>
-                </ClientOnly>
-                <!-- <Dropdown class="ml-3" :options="$i18n.availableLocales" :model-value="$i18n.locale"
-                    @change="(e) => $i18n.locale = e.value">
-                    <template #value="slotProps">
-                        <p v-if="slotProps.value">
-                            {{ $t(slotProps.value) }}
-                        </p>
-                        <p v-else>
-                            {{ slotProps.placeholder }}
-                        </p>
-                    </template>
-                    <template #option="slotProps">
-                        <p>
-                            {{ $t(slotProps.option) }}
-                        </p>
-                    </template>
-                </Dropdown> -->
-            </div>
-        </div>
         <div class="d-flex justify-content-center">
             <div class="login-card">
                 <div class="d-flex justify-content-center">

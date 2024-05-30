@@ -1,5 +1,3 @@
-import { getFloor } from "./floor"
-
 export const getLocation = async (id, params) => {
     return {
         id: 1,
@@ -18,9 +16,6 @@ export const getLocation = async (id, params) => {
                 image: "/test/office.jpg",
             }
         ],
-        floors: [
-            await getFloor()
-        ]
     }
 }
 
@@ -37,5 +32,22 @@ export const getLocations = async (params) => {
                 properties: await getLocation(),
             },
         ]
+    }
+}
+
+export const getFreeRoomsCount = async (location) => {
+    return {
+        "2024-05-30": Math.floor(Math.random() * 100),
+        "2024-05-31": Math.floor(Math.random() * 100),
+        "2024-06-01": Math.floor(Math.random() * 100),
+        "2024-06-02": Math.floor(Math.random() * 100),
+        "2024-06-03": Math.floor(Math.random() * 100),
+        "2024-06-04": Math.floor(Math.random() * 100),
+        "2024-06-05": Math.floor(Math.random() * 100),
+        "2024-06-06": Math.floor(Math.random() * 100),
+        "2024-06-07": Math.floor(Math.random() * 100),
+        "2024-06-08": Math.floor(Math.random() * 100),
+        "2024-06-09": Math.floor(Math.random() * 100),
+        "2024-06-10": Math.floor(Math.random() * 100),
     }
 }
