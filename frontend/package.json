@@ -13,6 +13,7 @@
     "p:up": "pnpm up"
   },
   "devDependencies": {
+    "@capacitor/cli": "^6.1.0",
     "@iconify/json": "^2.2.112",
     "@nuxt/devtools": "latest",
     "@pinia/nuxt": "^0.4.11",
@@ -27,9 +28,12 @@
     "unplugin-vue-components": "^0.25.2"
   },
   "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@capacitor/android": "^6.1.0",
+    "@capacitor/core": "^6.1.0",
+    "@capacitor/ios": "^6.1.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@turf/turf": "^6.5.0",
     "@vue-leaflet/vue-leaflet": "^0.10.1",

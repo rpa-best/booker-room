@@ -1,5 +1,5 @@
 <template>
-    <Dialog v-model:visible="date" modal :header="`${$t('Бранирование на')} ${this.$route.query.date}`" :style="{ width: '80%' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <Dialog v-model:visible="date" modal :header="`${$t('Бранирование на')} ${$route.query.date}`" :style="{ width: '80%' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
         <div class="row justify-content-between">
             <div v-for="size in Object.values(sizes)" class="col-1 p-1 m-2 cursor-pointer flex justify-content-center" :key="size"
             style="flex-direction: column; width: 150px; height: 200px; border: 1px solid var(--surface-border); border-radius: 10%;"

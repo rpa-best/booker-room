@@ -37,8 +37,8 @@ export default {
     methods: {
         select_location(location) {
             const query = JSON.parse(JSON.stringify(this.$route.query))
-            query.location = feature.properties.id
-            this.$router.push({name: this.$route.name, query: {location: location.properties.id}})
+            query.location = location.id
+            this.$router.push({name: this.$route.name, query})
         }
     },
 }
